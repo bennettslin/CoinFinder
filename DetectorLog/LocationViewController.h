@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  FirstViewController.h
 //  DetectorLog
 //
 //  Created by Bennett Lin on 9/6/14.
@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SecondViewController : UIViewController
-
+@interface LocationViewController : UIViewController
 
 @end
 
