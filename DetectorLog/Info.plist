@@ -42,5 +42,10 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Filmotype-MacBeth.otf</string>
+		<string>CaflischScriptPro-Semibold.otf</string>
+	</array>
 </dict>
 </plist>

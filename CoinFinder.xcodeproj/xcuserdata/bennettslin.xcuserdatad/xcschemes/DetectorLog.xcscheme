@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3F6CD13A19BBA83E005C32AF"
-               BuildableName = "DetectorLog.app"
-               BlueprintName = "DetectorLog"
-               ReferencedContainer = "container:DetectorLog.xcodeproj">
+               BuildableName = "CoinFinder.app"
+               BlueprintName = "CoinFinder"
+               ReferencedContainer = "container:CoinFinder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3F6CD15319BBA83E005C32AF"
-               BuildableName = "DetectorLogTests.xctest"
-               BlueprintName = "DetectorLogTests"
-               ReferencedContainer = "container:DetectorLog.xcodeproj">
+               BuildableName = "CoinFinderTests.xctest"
+               BlueprintName = "CoinFinderTests"
+               ReferencedContainer = "container:CoinFinder.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F6CD13A19BBA83E005C32AF"
-            BuildableName = "DetectorLog.app"
-            BlueprintName = "DetectorLog"
-            ReferencedContainer = "container:DetectorLog.xcodeproj">
+            BuildableName = "CoinFinder.app"
+            BlueprintName = "CoinFinder"
+            ReferencedContainer = "container:CoinFinder.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F6CD13A19BBA83E005C32AF"
-            BuildableName = "DetectorLog.app"
-            BlueprintName = "DetectorLog"
-            ReferencedContainer = "container:DetectorLog.xcodeproj">
+            BuildableName = "CoinFinder.app"
+            BlueprintName = "CoinFinder"
+            ReferencedContainer = "container:CoinFinder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "3F6CD13A19BBA83E005C32AF"
-            BuildableName = "DetectorLog.app"
-            BlueprintName = "DetectorLog"
-            ReferencedContainer = "container:DetectorLog.xcodeproj">
+            BuildableName = "CoinFinder.app"
+            BlueprintName = "CoinFinder"
+            ReferencedContainer = "container:CoinFinder.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

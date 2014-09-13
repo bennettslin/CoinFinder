@@ -3,6 +3,7 @@
 
 typedef enum pageType {
   kPageTypeFoundCoin,
+  kPageTypeEditCoin,
   kPageTypeMyCoins,
   kPageTypeCoinMap
 } PageType;

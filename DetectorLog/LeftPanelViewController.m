@@ -1,6 +1,7 @@
 #import "LeftPanelViewController.h"
 #import "LeftPanelTableViewCell.h"
 #import "MainViewController.h"
+#import "Constants.h"
 
 @interface LeftPanelViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -12,10 +13,12 @@
 
 -(void)viewDidLoad {
   [super viewDidLoad];
+  self.view.backgroundColor = kColourDarkTan;
   
-  self.cellsArray = @[@"Add new coin", @"My collection", @"Map of found coins"];
+  self.cellsArray = @[@"Add new coin", @"My found collection", @"Map of find locations"];
   self.myTableView.delegate = self;
   self.myTableView.dataSource = self;
+  self.myTableView.separatorColor = kColourDarkTan;
 }
 
 #pragma mark UITableView Datasource/Delegate
@@ -29,14 +32,17 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  return 44;
+  return 50;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   
   LeftPanelTableViewCell *pagesCell = [tableView dequeueReusableCellWithIdentifier:@"LeftPanelCell" forIndexPath:indexPath];
   
+  pagesCell.backgroundColor = kColourLightTan;
   pagesCell.titleLabel.text = self.cellsArray[indexPath.row];
+  pagesCell.titleLabel.font = [UIFont fontWithName:kFontMacBeth size:24.f];
+  pagesCell.titleLabel.textColor = kColourTextBlack;
 
   return pagesCell;
 }

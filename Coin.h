@@ -1,27 +1,23 @@
 //
 //  Coin.h
-//  DetectorLog
+//  CoinFinder
 //
-//  Created by Bennett Lin on 9/10/14.
+//  Created by Bennett Lin on 9/11/14.
 //  Copyright (c) 2014 Bennett Lin. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
+@class CLPlacemark;
 
-@interface Coin : NSObject <NSCoding>
+@interface Coin : NSManagedObject
 
-  // user editable
-@property (strong, nonatomic) NSString *title;
-@property (strong, nonatomic) UIImage *image;
-@property (strong, nonatomic) NSString *detail;
-@property (strong, nonatomic) CLPlacemark *placemark;
-
-  // user not editable
-@property (strong, nonatomic) CLLocation *location;
-@property (strong, nonatomic) NSDate *date;
-
--(NSString *)placemarkString;
+@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *detail;
+@property (nonatomic, retain) CLPlacemark *placemark;
+@property (nonatomic, retain) NSNumber *latitude;
+@property (nonatomic, retain) NSNumber *longitude;
+@property (nonatomic, retain) NSDate *date;
 
 @end

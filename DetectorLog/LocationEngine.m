@@ -6,17 +6,9 @@
 //  Copyright (c) 2014 Bennett Lin. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
-#import "LocationViewController.h"
+#import "LocationEngine.h"
 
-@interface LocationViewController () <CLLocationManagerDelegate>
-
-@property (nonatomic, weak) IBOutlet UILabel *messageLabel;
-@property (nonatomic, weak) IBOutlet UILabel *latitudeLabel;
-@property (nonatomic, weak) IBOutlet UILabel *longitudeLabel;
-@property (nonatomic, weak) IBOutlet UILabel *addressLabel;
-@property (nonatomic, weak) IBOutlet UIButton *tagButton;
-@property (nonatomic, weak) IBOutlet UIButton *getButton;
+@interface LocationEngine () <CLLocationManagerDelegate>
 
   // location manager
 @property (strong, nonatomic) CLLocationManager *locationManager;
@@ -30,10 +22,10 @@
 
 @end
 
-@implementation LocationViewController
+@implementation LocationEngine
 
--(id)initWithCoder:(NSCoder *)aDecoder {
-  if (self = [super initWithCoder:aDecoder]) {
+-(id)init {
+  if (self = [super init]) {
     
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
@@ -42,17 +34,6 @@
     self.geocoder = [CLGeocoder new];
   }
   return self;
-}
-            
--(void)viewDidLoad {
-  [super viewDidLoad];
-
-  [self startLocationManager];
-  [self updateViews];
-}
-
--(void)updateViews {
-  
 }
 
 #pragma mark - location manager methods
@@ -67,7 +48,6 @@
     self.latestPlacemark = nil;
     
     [self startLocationManager];
-    [self updateViews];
   }
 }
 
@@ -91,7 +71,10 @@
     if (error) {
       if (([error.domain isEqualToString:kCLErrorDomain] && error.code == kCLErrorDenied) ||
           ![CLLocationManager locationServicesEnabled]) {
+        
+          // FIXME: take care of location services disabled here
         NSLog(@"Location services are disabled for this app.");
+        [self.delegate updateLocationServicesDisabled];
       } else {
         NSLog(@"Error %@", error);
       }
@@ -101,7 +84,6 @@
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
   CLLocation *newLocation = [locations lastObject];
-  NSLog(@"did update location %@", newLocation);
   
     // ignore cached results or weird results
   if (newLocation.timestamp.timeIntervalSinceNow < -5.0 ||
@@ -109,17 +91,17 @@
     return;
   }
   
-  CLLocationDistance distance = CGFLOAT_MAX;
+  CLLocationDistance distance = MAXFLOAT;
   if (self.latestLocation) {
     distance = [newLocation distanceFromLocation:self.latestLocation];
   }
     
   if (!self.latestLocation || self.latestLocation.horizontalAccuracy > newLocation.horizontalAccuracy) {
     self.latestLocation = newLocation;
-    [self updateViews];
+    [self.delegate updateLatitude:self.latestLocation.coordinate.latitude
+                        longitude:self.latestLocation.coordinate.longitude];
     
     if (self.latestLocation.horizontalAccuracy <= self.locationManager.desiredAccuracy) {
-      NSLog(@"stopping because we're accurate enough");
       [self stopLocationManagerWithError:nil];
     }
     
@@ -129,23 +111,22 @@
         // perform reverse geocode for each improvement of location
       [self.geocoder reverseGeocodeLocation:self.latestLocation
                           completionHandler:^(NSArray *placemarks, NSError *error) {
-        NSLog(@"found placemarks %@, error %@", placemarks, error);
+
         if (!error && placemarks.count > 0) {
           self.latestPlacemark = [placemarks lastObject];
-          [self logPlacemark];
         } else {
           self.latestPlacemark = nil;
         }
+                            
         self.reverseGeocoding = NO;
-        [self updateViews];
+        [self.delegate updatePlacemark:self.latestPlacemark];
       }];
     }
     
   } else if (distance < 1.f) {
     NSTimeInterval timeInterval = [newLocation.timestamp timeIntervalSinceDate:self.latestLocation.timestamp];
     if (timeInterval > 10) {
-      
-      NSLog(@"force done!");
+
       [self stopLocationManagerWithError:nil];
     }
   }
@@ -159,7 +140,8 @@
   }
   
   [self stopLocationManagerWithError:error];
-  [self updateViews];
+  [self.delegate updateLatitude:MAXFLOAT longitude:MAXFLOAT];
+  [self.delegate updatePlacemark:nil];
 }
 
 #pragma mark - location helper methods
@@ -168,20 +150,17 @@
   if (!self.latestLocation) {
     [self stopLocationManagerWithError:nil];
   }
-  
-  [self updateViews];
 }
 
--(void)logPlacemark {
-  NSString *placemarkString = [NSString stringWithFormat:@"%@ %@\n%@ %@ %@", self.latestPlacemark.subThoroughfare, self.latestPlacemark.thoroughfare, self.latestPlacemark.locality, self.latestPlacemark.administrativeArea, self.latestPlacemark.postalCode];
-  NSLog(@"%@", placemarkString);
-}
+#pragma mark - singleton method
 
-#pragma mark - system methods
-
--(void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
++(LocationEngine *)locationEngine {
+  static dispatch_once_t pred;
+  static LocationEngine *shared = nil;
+  dispatch_once(&pred, ^{
+    shared = [[LocationEngine alloc] init];
+  });
+  return shared;
 }
 
 @end

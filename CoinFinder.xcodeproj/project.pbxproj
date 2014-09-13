@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F0AF5D019C3E6A000241F5D /* delete_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F0AF5CF19C3E6A000241F5D /* delete_icon.png */; };
+		3F22B70519C195B700E3249D /* IndentedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F22B70419C195B700E3249D /* IndentedTextField.m */; };
 		3F46220C19C11B8900EDC4F0 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46220B19C11B8900EDC4F0 /* MainViewController.m */; };
 		3F46221119C11C0900EDC4F0 /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46220E19C11C0900EDC4F0 /* CenterViewController.m */; };
 		3F46221219C11C0900EDC4F0 /* LeftPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46221019C11C0900EDC4F0 /* LeftPanelViewController.m */; };
@@ -16,15 +18,21 @@
 		3F46221E19C11C3E00EDC4F0 /* FoundCoinFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46221C19C11C3E00EDC4F0 /* FoundCoinFormViewController.m */; };
 		3F46222019C11D2400EDC4F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F46221F19C11D2400EDC4F0 /* Main.storyboard */; };
 		3F46222319C11D8900EDC4F0 /* LeftPanelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46222219C11D8900EDC4F0 /* LeftPanelTableViewCell.m */; };
-		3F46222919C11E3C00EDC4F0 /* Coin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46222819C11E3C00EDC4F0 /* Coin.m */; };
+		3F46222919C11E3C00EDC4F0 /* Coin(Old).m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46222819C11E3C00EDC4F0 /* Coin(Old).m */; };
 		3F46222F19C123CC00EDC4F0 /* Coins.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46222E19C123CC00EDC4F0 /* Coins.m */; };
 		3F46223219C1293600EDC4F0 /* hamburger_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F46223119C1293600EDC4F0 /* hamburger_icon.png */; };
 		3F6CD14119BBA83E005C32AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CD14019BBA83E005C32AF /* main.m */; };
 		3F6CD14419BBA83E005C32AF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CD14319BBA83E005C32AF /* AppDelegate.m */; };
-		3F6CD14719BBA83E005C32AF /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CD14619BBA83E005C32AF /* LocationViewController.m */; };
+		3F6CD14719BBA83E005C32AF /* LocationEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CD14619BBA83E005C32AF /* LocationEngine.m */; };
 		3F6CD14D19BBA83E005C32AF /* Main(Old).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F6CD14B19BBA83E005C32AF /* Main(Old).storyboard */; };
 		3F6CD14F19BBA83E005C32AF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6CD14E19BBA83E005C32AF /* Images.xcassets */; };
 		3F6CD15B19BBA83E005C32AF /* DetectorLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F6CD15A19BBA83E005C32AF /* DetectorLogTests.m */; };
+		3F71AEEC19C1B74200D62DDB /* Filmotype-MacBeth.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F71AEEB19C1B74200D62DDB /* Filmotype-MacBeth.otf */; };
+		3F71AEEF19C1BB9100D62DDB /* CaflischScriptPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3F71AEED19C1BB6100D62DDB /* CaflischScriptPro-Semibold.otf */; };
+		3F71AEF119C1BF5B00D62DDB /* placeholder_coin.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F71AEF019C1BF5B00D62DDB /* placeholder_coin.png */; };
+		3FCB51F019C2821200491C4A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FCB51EF19C2821200491C4A /* CoreData.framework */; };
+		3FCB51F619C2825400491C4A /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FCB51F419C2825400491C4A /* DataModel.xcdatamodeld */; };
+		3FCB51F919C2846400491C4A /* Coin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCB51F819C2846400491C4A /* Coin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F0AF5CF19C3E6A000241F5D /* delete_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_icon.png; sourceTree = "<group>"; };
+		3F22B6FD19C1837100E3249D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		3F22B70319C195B700E3249D /* IndentedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndentedTextField.h; sourceTree = "<group>"; };
+		3F22B70419C195B700E3249D /* IndentedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndentedTextField.m; sourceTree = "<group>"; };
 		3F46220A19C11B8900EDC4F0 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		3F46220B19C11B8900EDC4F0 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		3F46220D19C11C0900EDC4F0 /* CenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterViewController.h; sourceTree = "<group>"; };
@@ -55,23 +67,30 @@
 		3F46221F19C11D2400EDC4F0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = DetectorLog/Main.storyboard; sourceTree = "<group>"; };
 		3F46222119C11D8900EDC4F0 /* LeftPanelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftPanelTableViewCell.h; sourceTree = "<group>"; };
 		3F46222219C11D8900EDC4F0 /* LeftPanelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftPanelTableViewCell.m; sourceTree = "<group>"; };
-		3F46222719C11E3C00EDC4F0 /* Coin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coin.h; sourceTree = "<group>"; };
-		3F46222819C11E3C00EDC4F0 /* Coin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coin.m; sourceTree = "<group>"; };
+		3F46222719C11E3C00EDC4F0 /* Coin(Old).h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Coin(Old).h"; sourceTree = "<group>"; };
+		3F46222819C11E3C00EDC4F0 /* Coin(Old).m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Coin(Old).m"; sourceTree = "<group>"; };
 		3F46222D19C123CC00EDC4F0 /* Coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coins.h; sourceTree = "<group>"; };
 		3F46222E19C123CC00EDC4F0 /* Coins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coins.m; sourceTree = "<group>"; };
 		3F46223119C1293600EDC4F0 /* hamburger_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hamburger_icon.png; sourceTree = "<group>"; };
-		3F6CD13B19BBA83E005C32AF /* DetectorLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DetectorLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F6CD13B19BBA83E005C32AF /* CoinFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoinFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6CD13F19BBA83E005C32AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6CD14019BBA83E005C32AF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3F6CD14219BBA83E005C32AF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3F6CD14319BBA83E005C32AF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3F6CD14519BBA83E005C32AF /* LocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
-		3F6CD14619BBA83E005C32AF /* LocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
+		3F6CD14519BBA83E005C32AF /* LocationEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationEngine.h; sourceTree = "<group>"; };
+		3F6CD14619BBA83E005C32AF /* LocationEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationEngine.m; sourceTree = "<group>"; };
 		3F6CD14C19BBA83E005C32AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Main(Old).storyboard"; sourceTree = "<group>"; };
 		3F6CD14E19BBA83E005C32AF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		3F6CD15419BBA83E005C32AF /* DetectorLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DetectorLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F6CD15419BBA83E005C32AF /* CoinFinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoinFinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6CD15919BBA83E005C32AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6CD15A19BBA83E005C32AF /* DetectorLogTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetectorLogTests.m; sourceTree = "<group>"; };
+		3F71AEEB19C1B74200D62DDB /* Filmotype-MacBeth.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Filmotype-MacBeth.otf"; sourceTree = "<group>"; };
+		3F71AEED19C1BB6100D62DDB /* CaflischScriptPro-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CaflischScriptPro-Semibold.otf"; sourceTree = "<group>"; };
+		3F71AEF019C1BF5B00D62DDB /* placeholder_coin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_coin.png; sourceTree = "<group>"; };
+		3FCB51EF19C2821200491C4A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3FCB51F519C2825400491C4A /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		3FCB51F719C2846400491C4A /* Coin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coin.h; sourceTree = "<group>"; };
+		3FCB51F819C2846400491C4A /* Coin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coin.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FCB51F019C2821200491C4A /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,10 +115,13 @@
 		3F46223019C1261400EDC4F0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3FCB51F419C2825400491C4A /* DataModel.xcdatamodeld */,
+				3FCB51F719C2846400491C4A /* Coin.h */,
+				3FCB51F819C2846400491C4A /* Coin.m */,
 				3F46222D19C123CC00EDC4F0 /* Coins.h */,
 				3F46222E19C123CC00EDC4F0 /* Coins.m */,
-				3F46222719C11E3C00EDC4F0 /* Coin.h */,
-				3F46222819C11E3C00EDC4F0 /* Coin.m */,
+				3F46222719C11E3C00EDC4F0 /* Coin(Old).h */,
+				3F46222819C11E3C00EDC4F0 /* Coin(Old).m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -106,7 +129,13 @@
 		3F6CD13219BBA83E005C32AF = {
 			isa = PBXGroup;
 			children = (
+				3FCB51EF19C2821200491C4A /* CoreData.framework */,
+				3F22B6FD19C1837100E3249D /* Constants.h */,
+				3F71AEED19C1BB6100D62DDB /* CaflischScriptPro-Semibold.otf */,
+				3F71AEEB19C1B74200D62DDB /* Filmotype-MacBeth.otf */,
+				3F0AF5CF19C3E6A000241F5D /* delete_icon.png */,
 				3F46223119C1293600EDC4F0 /* hamburger_icon.png */,
+				3F71AEF019C1BF5B00D62DDB /* placeholder_coin.png */,
 				3F46221F19C11D2400EDC4F0 /* Main.storyboard */,
 				3F46223019C1261400EDC4F0 /* Model */,
 				3F6CD13D19BBA83E005C32AF /* DetectorLog */,
@@ -118,8 +147,8 @@
 		3F6CD13C19BBA83E005C32AF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3F6CD13B19BBA83E005C32AF /* DetectorLog.app */,
-				3F6CD15419BBA83E005C32AF /* DetectorLogTests.xctest */,
+				3F6CD13B19BBA83E005C32AF /* CoinFinder.app */,
+				3F6CD15419BBA83E005C32AF /* CoinFinderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,12 +170,14 @@
 				3F46221A19C11C3E00EDC4F0 /* FoundCoinViewController.m */,
 				3F46221B19C11C3E00EDC4F0 /* FoundCoinFormViewController.h */,
 				3F46221C19C11C3E00EDC4F0 /* FoundCoinFormViewController.m */,
-				3F6CD14519BBA83E005C32AF /* LocationViewController.h */,
-				3F6CD14619BBA83E005C32AF /* LocationViewController.m */,
+				3F6CD14519BBA83E005C32AF /* LocationEngine.h */,
+				3F6CD14619BBA83E005C32AF /* LocationEngine.m */,
 				3F46221319C11C1E00EDC4F0 /* MyCoinsViewController.h */,
 				3F46221419C11C1E00EDC4F0 /* MyCoinsViewController.m */,
 				3F46221519C11C1E00EDC4F0 /* MyCoinsViewCell.h */,
 				3F46221619C11C1E00EDC4F0 /* MyCoinsViewCell.m */,
+				3F22B70319C195B700E3249D /* IndentedTextField.h */,
+				3F22B70419C195B700E3249D /* IndentedTextField.m */,
 				3F6CD14E19BBA83E005C32AF /* Images.xcassets */,
 				3F6CD13E19BBA83E005C32AF /* Supporting Files */,
 			);
@@ -183,9 +214,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3F6CD13A19BBA83E005C32AF /* DetectorLog */ = {
+		3F6CD13A19BBA83E005C32AF /* CoinFinder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F6CD15E19BBA83E005C32AF /* Build configuration list for PBXNativeTarget "DetectorLog" */;
+			buildConfigurationList = 3F6CD15E19BBA83E005C32AF /* Build configuration list for PBXNativeTarget "CoinFinder" */;
 			buildPhases = (
 				3F6CD13719BBA83E005C32AF /* Sources */,
 				3F6CD13819BBA83E005C32AF /* Frameworks */,
@@ -195,14 +226,14 @@
 			);
 			dependencies = (
 			);
-			name = DetectorLog;
+			name = CoinFinder;
 			productName = DetectorLog;
-			productReference = 3F6CD13B19BBA83E005C32AF /* DetectorLog.app */;
+			productReference = 3F6CD13B19BBA83E005C32AF /* CoinFinder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3F6CD15319BBA83E005C32AF /* DetectorLogTests */ = {
+		3F6CD15319BBA83E005C32AF /* CoinFinderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F6CD16119BBA83E005C32AF /* Build configuration list for PBXNativeTarget "DetectorLogTests" */;
+			buildConfigurationList = 3F6CD16119BBA83E005C32AF /* Build configuration list for PBXNativeTarget "CoinFinderTests" */;
 			buildPhases = (
 				3F6CD15019BBA83E005C32AF /* Sources */,
 				3F6CD15119BBA83E005C32AF /* Frameworks */,
@@ -213,9 +244,9 @@
 			dependencies = (
 				3F6CD15619BBA83E005C32AF /* PBXTargetDependency */,
 			);
-			name = DetectorLogTests;
+			name = CoinFinderTests;
 			productName = DetectorLogTests;
-			productReference = 3F6CD15419BBA83E005C32AF /* DetectorLogTests.xctest */;
+			productReference = 3F6CD15419BBA83E005C32AF /* CoinFinderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -236,7 +267,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3F6CD13619BBA83E005C32AF /* Build configuration list for PBXProject "DetectorLog" */;
+			buildConfigurationList = 3F6CD13619BBA83E005C32AF /* Build configuration list for PBXProject "CoinFinder" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -249,8 +280,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3F6CD13A19BBA83E005C32AF /* DetectorLog */,
-				3F6CD15319BBA83E005C32AF /* DetectorLogTests */,
+				3F6CD13A19BBA83E005C32AF /* CoinFinder */,
+				3F6CD15319BBA83E005C32AF /* CoinFinderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,10 +291,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F71AEEF19C1BB9100D62DDB /* CaflischScriptPro-Semibold.otf in Resources */,
 				3F46222019C11D2400EDC4F0 /* Main.storyboard in Resources */,
+				3F71AEEC19C1B74200D62DDB /* Filmotype-MacBeth.otf in Resources */,
 				3F6CD14D19BBA83E005C32AF /* Main(Old).storyboard in Resources */,
 				3F46223219C1293600EDC4F0 /* hamburger_icon.png in Resources */,
+				3F0AF5D019C3E6A000241F5D /* delete_icon.png in Resources */,
 				3F6CD14F19BBA83E005C32AF /* Images.xcassets in Resources */,
+				3F71AEF119C1BF5B00D62DDB /* placeholder_coin.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,14 +316,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F46222919C11E3C00EDC4F0 /* Coin.m in Sources */,
+				3F22B70519C195B700E3249D /* IndentedTextField.m in Sources */,
+				3F46222919C11E3C00EDC4F0 /* Coin(Old).m in Sources */,
 				3F46221819C11C1E00EDC4F0 /* MyCoinsViewCell.m in Sources */,
 				3F46221D19C11C3E00EDC4F0 /* FoundCoinViewController.m in Sources */,
 				3F46221719C11C1E00EDC4F0 /* MyCoinsViewController.m in Sources */,
 				3F46222F19C123CC00EDC4F0 /* Coins.m in Sources */,
+				3FCB51F619C2825400491C4A /* DataModel.xcdatamodeld in Sources */,
 				3F6CD14419BBA83E005C32AF /* AppDelegate.m in Sources */,
-				3F6CD14719BBA83E005C32AF /* LocationViewController.m in Sources */,
+				3F6CD14719BBA83E005C32AF /* LocationEngine.m in Sources */,
 				3F46221E19C11C3E00EDC4F0 /* FoundCoinFormViewController.m in Sources */,
+				3FCB51F919C2846400491C4A /* Coin.m in Sources */,
 				3F46222319C11D8900EDC4F0 /* LeftPanelTableViewCell.m in Sources */,
 				3F46220C19C11B8900EDC4F0 /* MainViewController.m in Sources */,
 				3F6CD14119BBA83E005C32AF /* main.m in Sources */,
@@ -310,7 +348,7 @@
 /* Begin PBXTargetDependency section */
 		3F6CD15619BBA83E005C32AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3F6CD13A19BBA83E005C32AF /* DetectorLog */;
+			target = 3F6CD13A19BBA83E005C32AF /* CoinFinder */;
 			targetProxy = 3F6CD15519BBA83E005C32AF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -411,7 +449,7 @@
 				INFOPLIST_FILE = DetectorLog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoinFinder;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -424,7 +462,7 @@
 				INFOPLIST_FILE = DetectorLog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoinFinder;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -443,7 +481,7 @@
 				);
 				INFOPLIST_FILE = DetectorLogTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoinFinderTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -458,7 +496,7 @@
 				);
 				INFOPLIST_FILE = DetectorLogTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoinFinderTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
@@ -466,7 +504,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3F6CD13619BBA83E005C32AF /* Build configuration list for PBXProject "DetectorLog" */ = {
+		3F6CD13619BBA83E005C32AF /* Build configuration list for PBXProject "CoinFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F6CD15C19BBA83E005C32AF /* Debug */,
@@ -475,7 +513,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F6CD15E19BBA83E005C32AF /* Build configuration list for PBXNativeTarget "DetectorLog" */ = {
+		3F6CD15E19BBA83E005C32AF /* Build configuration list for PBXNativeTarget "CoinFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F6CD15F19BBA83E005C32AF /* Debug */,
@@ -484,7 +522,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F6CD16119BBA83E005C32AF /* Build configuration list for PBXNativeTarget "DetectorLogTests" */ = {
+		3F6CD16119BBA83E005C32AF /* Build configuration list for PBXNativeTarget "CoinFinderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F6CD16219BBA83E005C32AF /* Debug */,
@@ -494,6 +532,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3FCB51F419C2825400491C4A /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3FCB51F519C2825400491C4A /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 3FCB51F519C2825400491C4A /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3F6CD13319BBA83E005C32AF /* Project object */;
 }

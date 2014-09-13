@@ -8,10 +8,22 @@
 
 #import "MyCoinsViewCell.h"
 
-@interface MyCoinsViewCell ()
+@interface MyCoinsViewCell () <UIActionSheetDelegate>
 
 @end
 
 @implementation MyCoinsViewCell
+
+-(IBAction)deleteButtonTapped:(id)sender {
+  UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Are you sure you want to delete this coin?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:nil, nil];
+  [actionSheet showInView:self];
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+  if (buttonIndex == 0) {
+    NSLog(@"delete button pressed");
+    [self.delegate deleteCoin:self.myCoin];
+  }
+}
 
 @end

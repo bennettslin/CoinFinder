@@ -39,9 +39,9 @@
   
   self.myCoins = [Coins getCoins];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToStoreCoin:) name:@"storeCoin" object:nil];
+//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToStoreCoin:) name:@"storeCoin" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToEditCoin:) name:@"editCoin" object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToPresentCoins:) name:@"presentCoins" object:nil];
+//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToPresentCoins:) name:@"presentCoins" object:nil];
 }
 
 #pragma mark - views
@@ -113,8 +113,16 @@
   if (pageType == kPageTypeFoundCoin) {
     FoundCoinViewController *foundCoinVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FoundCoinVC"];
     foundCoinVC.myCoin = coin;
+    foundCoinVC.postingNewCoinForFirstTime = YES;
     childVC = foundCoinVC;
     self.centerVC.topBarLabel.text = self.leftPanelVC.cellsArray[0];
+
+  } else if (pageType == kPageTypeEditCoin) {
+    FoundCoinViewController *editCoinVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FoundCoinVC"];
+    editCoinVC.myCoin = coin;
+    editCoinVC.postingNewCoinForFirstTime = NO;
+    childVC = editCoinVC;
+    self.centerVC.topBarLabel.text = @"Edit this coin";
     
   } else if (pageType == kPageTypeMyCoins) {
     MyCoinsViewController *myCoinsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MyCoinsVC"];
@@ -179,8 +187,11 @@
       [sender view].center.x > _centerVC.view.frame.size.width * 9/16 :
       [sender view].center.x > _centerVC.view.frame.size.width * 23/16 - kPanelWidth;
     
-      // Allow dragging only in x-coordinates by only updating the x-coordinate with translation position
-    [sender view].center = CGPointMake([sender view].center.x + translatedPoint.x, [sender view].center.y);
+      // will not drag too far left
+    CGFloat xCoord = ([sender view].center.x + translatedPoint.x) < self.view.frame.size.width / 2 ?
+        0 : translatedPoint.x;
+    
+    [sender view].center = CGPointMake([sender view].center.x + xCoord, [sender view].center.y);
     [(UIPanGestureRecognizer*)sender setTranslation:CGPointMake(0,0) inView:self.view];
   }
 }
@@ -236,38 +247,38 @@
 
 #pragma mark - NSNotification method
 
--(void)receiveNotificationToStoreCoin:(NSNotification *)notification {
-  if ([notification.name isEqualToString:@"storeCoin"]) {
-    NSDictionary *coinInfo = notification.userInfo;
-    Coin *coin = [coinInfo objectForKey:@"coin"];
-    [self storeCoin:coin];
-  }
-}
+//-(void)receiveNotificationToStoreCoin:(NSNotification *)notification {
+//  if ([notification.name isEqualToString:@"storeCoin"]) {
+//    NSDictionary *coinInfo = notification.userInfo;
+//    Coin *coin = [coinInfo objectForKey:@"coin"];
+//    [self storeCoin:coin];
+//  }
+//}
 
 -(void)receiveNotificationToEditCoin:(NSNotification *)notification {
   if ([notification.name isEqualToString:@"editCoin"]) {
     
     NSDictionary *coinInfo = notification.userInfo;
     Coin *myCoin = [coinInfo objectForKey:@"coin"];
-    [self loadChildPage:kPageTypeFoundCoin withCoin:myCoin];
+    [self loadChildPage:kPageTypeEditCoin withCoin:myCoin];
   }
 }
 
--(void)receiveNotificationToPresentCoins:(NSNotification *)notification {
-  NSMutableDictionary *coinsInfo = [NSMutableDictionary dictionary];
-  [coinsInfo setObject:self.myCoins forKey:@"coins"];
-  
-  NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-  [notificationCenter postNotificationName:@"sendCoins" object:self userInfo:coinsInfo];
-}
+//-(void)receiveNotificationToPresentCoins:(NSNotification *)notification {
+//  NSMutableDictionary *coinsInfo = [NSMutableDictionary dictionary];
+//  [coinsInfo setObject:self.myCoins forKey:@"coins"];
+//  
+//  NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+//  [notificationCenter postNotificationName:@"sendCoins" object:self userInfo:coinsInfo];
+//}
 
 #pragma mark - Store and persist data methods
 
--(void)storeCoin:(Coin *)myCoin {
-  
-  [self.myCoins addToMyCoinsThisCoin:myCoin];
-  [self loadChildPage:kPageTypeMyCoins withCoin:nil];
-}
+//-(void)storeCoin:(Coin *)myCoin {
+//  
+//  [self.myCoins addToMyCoinsThisCoin:myCoin];
+//  [self loadChildPage:kPageTypeMyCoins withCoin:nil];
+//}
 
 #pragma mark Default System Code
 

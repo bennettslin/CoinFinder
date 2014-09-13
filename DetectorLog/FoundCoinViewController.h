@@ -12,5 +12,6 @@
 @interface FoundCoinViewController : UIViewController
 
 @property (strong, nonatomic) Coin *myCoin;
+@property (assign, nonatomic) BOOL postingNewCoinForFirstTime;
 
 @end
