@@ -11,6 +11,6 @@ typedef enum pageType {
 @interface MainViewController : UIViewController
 
 -(void)removeCenterChildVCs;
--(void)loadChildPage:(PageType)pageType withCoin:(Coin *)coin;
+-(void)loadChildPage:(PageType)pageType withCoin:(Coin *)coin showCoinInMap:(BOOL)showCoinInMap;
 
 @end

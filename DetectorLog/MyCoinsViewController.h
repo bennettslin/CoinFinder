@@ -11,7 +11,4 @@
 
 @interface MyCoinsViewController : UIViewController
 
-//@property (strong, nonatomic) Coins *myCoins;
-//@property (strong, nonatomic) NSArray *myCoins;
-
 @end

@@ -29,6 +29,8 @@
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+@property (strong, nonatomic) UIImage *tempImage;
+
   // pointers and bools
 @property (nonatomic) NSUInteger sourceType;
 @property (nonatomic) BOOL postingCoinForFirstTime;
@@ -61,6 +63,7 @@
   self.titleField.layer.cornerRadius = 5.f;
   self.titleField.clipsToBounds = YES;
   self.titleField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+  self.titleField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
   
   self.detailField.layer.borderColor = [UIColor lightGrayColor].CGColor;
   self.detailField.layer.borderWidth = 1.f;
@@ -74,30 +77,26 @@
   self.placemarkField.layer.cornerRadius = 5.f;
   self.placemarkField.clipsToBounds = YES;
   self.placemarkField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
+  self.placemarkField.autocapitalizationType = UITextAutocapitalizationTypeWords;
   
   self.postDateLabel.adjustsFontSizeToFitWidth = YES;
   self.coordinateLabel.adjustsFontSizeToFitWidth = YES;
 }
 
--(void)viewWillAppear:(BOOL)animated {
-  
-  NSLog(@"add/edit coin view will appear");
-  
+-(void)checkIfAddOrEdit {
   self.postingCoinForFirstTime = [self.delegate firstTime];
   NSString *postCoinButtonText;
   
     // adding coin
   if (self.postingCoinForFirstTime) {
-  
+    NSLog(@"adding coin first time");
     self.myCoin = nil;
-    
     [self updatePickedImage:nil];
     self.titleField.text = @"";
     self.detailField.text = @"";
     [self returnTextViewPlaceholderIfNecessary];
     
     postCoinButtonText = @" Add this coin! ";
-    self.currentLocationButton.enabled = YES;
     
     [self updatePlacemark:nil];
     [self updateLatitude:MAXFLOAT longitude:MAXFLOAT];
@@ -106,25 +105,35 @@
       // editing coin
   } else {
     
-      // FIXME: uncomment this
-//    [self updatePickedImage:self.myCoin.image];
-    [self updatePickedImage:nil]; // delete this
+    NSLog(@"editing coin");
+    if ([self.myCoin hasPhoto]) {
+      [self updatePickedImage:[self.myCoin photoImage]];
+    } else {
+      [self updatePickedImage:nil];
+    }
     self.titleField.text = self.myCoin.title;
     self.detailField.text = self.myCoin.detail;
     [self returnTextViewPlaceholderIfNecessary];
     
     postCoinButtonText = @" Save changes! ";
-    self.currentLocationButton.enabled = NO;
     
     [self updatePlacemark:self.myCoin.placemark];
     [self updateLatitude:[self.myCoin.latitude floatValue]
                longitude:[self.myCoin.longitude floatValue]];
     [self updateDate:self.myCoin.date];
   }
-
+  
   [self.postCoinButton setTitle:postCoinButtonText forState:UIControlStateNormal];
   self.postCoinButton.titleLabel.font = [UIFont fontWithName:kFontCaflisch size:36.f];
   [self checkToEnablePostCoinButton];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+  if (![self.locationEngine checkLocationServicesEnabled] || !self.postingCoinForFirstTime) {
+    self.currentLocationButton.enabled = NO;
+  } else {
+    self.currentLocationButton.enabled = YES;
+  }
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -133,6 +142,7 @@
 }
 
 -(void)updatePickedImage:(UIImage *)pickedImage {
+  self.tempImage = pickedImage;
   
   if (pickedImage) {
     self.imageView.image = pickedImage;
@@ -142,9 +152,6 @@
     self.imageView.image = [UIImage imageNamed:@"placeholder_coin"];
     [self.addOrChangePhotoButton setTitle:@"Add photo" forState:UIControlStateNormal];
   }
-  
-    // FIXME: uncomment this
-//  self.myCoin.image = self.imageView.image;
 }
 
 
@@ -172,16 +179,18 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
   [self dismissViewControllerAnimated:YES completion:^{
-    NSLog(@"User cancelled image picker");
   }];
 }
 
 -(void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
   if (error) {
-    NSLog(@"There was an error");
-  } else {
-    NSLog(@"Image successfully saved");
+    [self showErrorAlertView:error];
   }
+}
+
+-(void)showErrorAlertView:(NSError *)error {
+  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:[NSString stringWithFormat:@"There was an error: %@", error.description] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+  [alertView show];
 }
 
 -(void)presentPickerActionSheet {
@@ -191,7 +200,7 @@
                                                              delegate:self
                                                     cancelButtonTitle:@"Cancel"
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Take a photo", @"Select photo from camera roll", nil];
+                                                    otherButtonTitles:@"Take a photo", @"Select from photos album", nil];
     [actionSheet showInView:self.view.superview];
   } else {
       // otherwise user has no choice but to select photo
@@ -211,21 +220,35 @@
   
   if (!self.myCoin) {
     self.myCoin = [NSEntityDescription insertNewObjectForEntityForName:@"Coin" inManagedObjectContext:self.managedObjectContext];
+    self.myCoin.photoID = @-1;
   }
   
-  self.myCoin.title = self.titleField.text;
-  self.myCoin.detail = self.detailField.text;
+  [self.myCoin setName:self.titleField.text];
+  [self.myCoin setDetail:self.detailField.text];
   
   if ([self.coordinateLabel.text isEqualToString:@""]) {
-    self.myCoin.latitude = @(MAXFLOAT);
-    self.myCoin.longitude = @(MAXFLOAT);
+    [self.myCoin setLatitude:@(MAXFLOAT)];
+    [self.myCoin setLongitude:@(MAXFLOAT)];
   } else {
-    self.myCoin.latitude = @(self.locationEngine.latestLocation.coordinate.latitude);
-    self.myCoin.longitude = @(self.locationEngine.latestLocation.coordinate.longitude);
+    [self.myCoin setLatitude:@(self.locationEngine.latestLocation.coordinate.latitude)];
+    [self.myCoin setLongitude:@(self.locationEngine.latestLocation.coordinate.longitude)];
   }
   
-  self.myCoin.date = self.postingCoinForFirstTime ? [NSDate date] : self.myCoin.date;
-  self.myCoin.placemark = self.locationEngine.latestPlacemark;
+  [self.myCoin setDate:(self.postingCoinForFirstTime ? [NSDate date] : self.myCoin.date)];
+  [self.myCoin setPlacemark:self.locationEngine.latestPlacemark];
+  
+  if (self.tempImage) {
+    
+    if (![self.myCoin hasPhoto]) {
+      self.myCoin.photoID = @([Coin nextPhotoID]);
+    }
+    
+    NSData *data = UIImageJPEGRepresentation(self.tempImage, 0.5);
+    NSError *error;
+    if (![data writeToFile:[self.myCoin photoPath] options:NSDataWritingAtomic error:&error]) {
+      [self showErrorAlertView:error];
+    }
+  }
   
   NSError *error;
   if (![self.managedObjectContext save:&error]) {
@@ -236,16 +259,21 @@
     
   } else {
     
-//    [[NSNotificationCenter defaultCenter] postNotificationName:NSManagedObjectContextDidSaveNotification object:self.managedObjectContext];
-    
-      // FIXME: change to UIView
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Coin saved!" message:@"Coin saved" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    UIAlertView *alertView;
+    if (self.postingCoinForFirstTime) {
+      alertView = [[UIAlertView alloc] initWithTitle:@"Coin added!" message:@"New coin added to collection." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+      
+    } else {
+      alertView = [[UIAlertView alloc] initWithTitle:@"Coin edited!" message:@"Your changes have been saved." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    }
+    alertView.tag = 50;
     [alertView show];
+
   }
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-  if (buttonIndex == 0) {
+  if (buttonIndex == 0 && alertView.tag == 50) {
     self.myCoin = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"movePanelRight" object:nil];
   }
@@ -261,12 +289,10 @@
   switch (buttonIndex) {
     case 0:
         // take photo
-      NSLog(@"User chose to take photo");
       [self pickerWithSourceType:UIImagePickerControllerSourceTypeCamera];
       break;
     case 1:
         // select photo
-      NSLog(@"User chose to select photo");
       [self pickerWithSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
       break;
   }
@@ -275,7 +301,7 @@
 #pragma mark - update textField methods
 
 -(void)updateLocationServicesDisabled {
-  self.coordinateLabel.text = @"Location services have been disabled for this app.";
+//  self.coordinateLabel.text = @"Location services have been disabled for this app.";
   self.currentLocationButton.enabled = NO;
 }
 
@@ -315,9 +341,6 @@
 
 -(void)textViewDidBeginEditing:(UITextView *)textView {
   [self.delegate keyboardDidShow:nil];
-  
-  NSLog(@"textView did begin editing");
-  
   if ([textView.text isEqualToString:@"Describe your find"]) {
     textView.text = @"";
   }
@@ -361,9 +384,8 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
-  self.myCoin.title = self.titleField.text;
+  self.myCoin.name = self.titleField.text;
   self.myCoin.detail = self.detailField.text;
-//  self.myCoin.placemark = self.placemarkField.text;
   
   [self.titleField resignFirstResponder];
   [self.detailField resignFirstResponder];
@@ -381,6 +403,10 @@
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  [self resignFirstResponders];
+}
+
+-(void)resignFirstResponders {
   [self.titleField resignFirstResponder];
   [self.detailField resignFirstResponder];
   [self.placemarkField resignFirstResponder];
@@ -398,6 +424,10 @@
 
 -(void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

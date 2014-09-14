@@ -35,28 +35,34 @@
   [self.view addSubview:self.scrollView];
   self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 560); // hard-coded value is from storyboard
   [self presentForm];
-  
-//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 -(void)keyboardDidShow:(NSNotification *)notification {
   
   CGFloat yOffset = 0;
+  CGFloat keyboardSize = 216 + 100; // keyboard height plus extra padding
   
     // FIXME: hard-coded values for now
   UIView *firstResponderView = [self.foundCoinFormVC checkFirstResponder];
   if (firstResponderView == self.foundCoinFormVC.titleField) {
-    yOffset = 10.f;
+    yOffset = self.view.frame.size.height - (self.foundCoinFormVC.titleField.frame.origin.y + self.foundCoinFormVC.titleField.frame.size.height) - keyboardSize;
   } else if (firstResponderView == self.foundCoinFormVC.detailField) {
-    yOffset = 100.f;
+    
+    
+    yOffset = self.view.frame.size.height - (self.foundCoinFormVC.detailField.frame.origin.y + self.foundCoinFormVC.detailField.frame.size.height) - keyboardSize;
+    if (yOffset < -216) {
+      yOffset = -216;
+    }
+    
   } else if (firstResponderView == self.foundCoinFormVC.placemarkField) {
-    yOffset = 216.f;
+    yOffset = -216;
   }
   
   [UIView animateWithDuration:0.25f delay:0.f options:UIViewAnimationOptionCurveEaseIn animations:^{
       // keyboard height is 216
-    self.foundCoinFormVC.view.frame = CGRectMake(0, -yOffset, self.view.frame.size.width, 560);
+    self.foundCoinFormVC.view.frame = CGRectMake(0, yOffset, self.view.frame.size.width, 560);
   } completion:^(BOOL finished) {
   
   }];
@@ -73,15 +79,17 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-  if (self.myCoin) {
-    self.foundCoinFormVC.myCoin = self.myCoin;
-  }
+
 }
 
 -(void)presentForm {
   self.foundCoinFormVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FoundCoinFormVC"];
   self.foundCoinFormVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 560);
+  if (self.myCoin) {
+    self.foundCoinFormVC.myCoin = self.myCoin;
+  }
   self.foundCoinFormVC.delegate = self;
+  [self.foundCoinFormVC checkIfAddOrEdit];
   
   [self.scrollView addSubview:self.foundCoinFormVC.view];
   [self addChildViewController:self.foundCoinFormVC];
@@ -89,6 +97,7 @@
 }
 
 -(BOOL)firstTime {
+  NSLog(@"found coin VC thinks it's %i", self.postingNewCoinForFirstTime);
   return self.postingNewCoinForFirstTime;
 }
 
@@ -96,6 +105,10 @@
 
 -(void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

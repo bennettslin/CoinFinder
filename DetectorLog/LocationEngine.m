@@ -51,6 +51,12 @@
   }
 }
 
+-(BOOL)checkLocationServicesEnabled {
+  
+  return [CLLocationManager locationServicesEnabled] &&
+      [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied;
+}
+
 -(void)startLocationManager {
   if ([CLLocationManager locationServicesEnabled]) {
     self.updatingLocation = YES;
@@ -71,12 +77,10 @@
     if (error) {
       if (([error.domain isEqualToString:kCLErrorDomain] && error.code == kCLErrorDenied) ||
           ![CLLocationManager locationServicesEnabled]) {
-        
-          // FIXME: take care of location services disabled here
-        NSLog(@"Location services are disabled for this app.");
+        [self.delegate showErrorAlertView:error];
         [self.delegate updateLocationServicesDisabled];
       } else {
-        NSLog(@"Error %@", error);
+        [self.delegate showErrorAlertView:error];
       }
     }
   }

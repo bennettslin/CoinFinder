@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) Coin *myCoin;
 
+@property (weak, nonatomic) IBOutlet UIButton *mapButton;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 

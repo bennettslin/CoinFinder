@@ -3,7 +3,8 @@
 #import "LeftPanelViewController.h"
 #import "FoundCoinViewController.h"
 #import "MyCoinsViewController.h"
-#import "Coins.h"
+#import "MapViewController.h"
+//#import "Coins.h"
 #import "Coin.h"
 
 #define kCenterTag 1
@@ -37,11 +38,13 @@
   [super viewDidLoad];
   [self setupView];
   
-  self.myCoins = [Coins getCoins];
+//  self.myCoins = [Coins getCoins];
   
 //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToStoreCoin:) name:@"storeCoin" object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToEditCoin:) name:@"editCoin" object:nil];
-//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToPresentCoins:) name:@"presentCoins" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToShowCoinInMap:) name:@"showCoinInMap" object:nil];
+  
+    //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNotificationToPresentCoins:) name:@"presentCoins" object:nil];
 }
 
 #pragma mark - views
@@ -63,7 +66,7 @@
   [_centerVC didMoveToParentViewController:self];
   
     // default page when it loads
-  [self loadChildPage:kPageTypeFoundCoin withCoin:nil];
+  [self loadChildPage:kPageTypeFoundCoin withCoin:nil showCoinInMap:NO];
   [self movePanelRight];
   [self setupGestures];
 }
@@ -106,13 +109,13 @@
   }
 }
 
--(void)loadChildPage:(PageType)pageType withCoin:(Coin *)coin {
+-(void)loadChildPage:(PageType)pageType withCoin:(Coin *)coin showCoinInMap:(BOOL)showCoinInMap {
   [self removeCenterChildVCs];
   UIViewController *childVC;
 
   if (pageType == kPageTypeFoundCoin) {
     FoundCoinViewController *foundCoinVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FoundCoinVC"];
-    foundCoinVC.myCoin = coin;
+    foundCoinVC.myCoin = nil;
     foundCoinVC.postingNewCoinForFirstTime = YES;
     childVC = foundCoinVC;
     self.centerVC.topBarLabel.text = self.leftPanelVC.cellsArray[0];
@@ -130,8 +133,11 @@
     self.centerVC.topBarLabel.text = self.leftPanelVC.cellsArray[1];
   
   } else if (pageType == kPageTypeCoinMap) {
-
-      // FIXME: add
+    MapViewController *mapVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MapVC"];
+    if (showCoinInMap) {
+      mapVC.coinToShowInMap = coin;
+    };
+    childVC = mapVC;
     self.centerVC.topBarLabel.text = self.leftPanelVC.cellsArray[2];
   }
   
@@ -199,6 +205,9 @@
 #pragma mark - actions
 
 -(void)movePanelRight { // to show left panel
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"disableMapScroll" object:nil];
+  
   UIView *childView = [self getLeftView];
   [self.view sendSubviewToBack:childView];
   
@@ -215,6 +224,9 @@
 }
 
 -(void)movePanelToOriginalPosition {
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"enableMapScroll" object:nil];
+  
   [UIView animateWithDuration:kSlideTiming delay:0 options:UIViewAnimationOptionBeginFromCurrentState
                    animations:^{
                      _centerVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
@@ -247,43 +259,76 @@
 
 #pragma mark - NSNotification method
 
-//-(void)receiveNotificationToStoreCoin:(NSNotification *)notification {
-//  if ([notification.name isEqualToString:@"storeCoin"]) {
-//    NSDictionary *coinInfo = notification.userInfo;
-//    Coin *coin = [coinInfo objectForKey:@"coin"];
-//    [self storeCoin:coin];
-//  }
-//}
-
 -(void)receiveNotificationToEditCoin:(NSNotification *)notification {
   if ([notification.name isEqualToString:@"editCoin"]) {
     
     NSDictionary *coinInfo = notification.userInfo;
     Coin *myCoin = [coinInfo objectForKey:@"coin"];
-    [self loadChildPage:kPageTypeEditCoin withCoin:myCoin];
+    NSLog(@"mycoin name is %@", myCoin.name);
+    [self movePanelRightBeforeEditingCoin:myCoin];
   }
 }
 
-//-(void)receiveNotificationToPresentCoins:(NSNotification *)notification {
-//  NSMutableDictionary *coinsInfo = [NSMutableDictionary dictionary];
-//  [coinsInfo setObject:self.myCoins forKey:@"coins"];
-//  
-//  NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//  [notificationCenter postNotificationName:@"sendCoins" object:self userInfo:coinsInfo];
-//}
+-(void)receiveNotificationToShowCoinInMap:(NSNotification *)notification {
+  if ([notification.name isEqualToString:@"showCoinInMap"]) {
+    
+    NSDictionary *coinInfo = notification.userInfo;
+    Coin *myCoin = [coinInfo objectForKey:@"coin"];
+    
+    [self movePanelRightBeforeShowingCoinInMap:myCoin];
+  }
+}
 
-#pragma mark - Store and persist data methods
+  // totally not DRY, but I'm lazy at this point
+-(void)movePanelRightBeforeEditingCoin:(Coin *)coin { // to show left panel
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"disableMapScroll" object:nil];
+  
+  UIView *childView = [self getLeftView];
+  [self.view sendSubviewToBack:childView];
+  
+  [UIView animateWithDuration:kSlideTiming delay:0 options:UIViewAnimationOptionBeginFromCurrentState
+                   animations:^{
+                     _centerVC.view.frame = CGRectMake(self.view.frame.size.width - kPanelWidth, 0, self.view.frame.size.width, self.view.frame.size.height);
+                   }
+                   completion:^(BOOL finished) {
+                     if (finished) {
+                       _centerVC.leftButton.tag = 0;
+                      [self loadChildPage:kPageTypeEditCoin withCoin:coin showCoinInMap:NO];
+                     }
+                   }];
+  
+}
 
-//-(void)storeCoin:(Coin *)myCoin {
-//  
-//  [self.myCoins addToMyCoinsThisCoin:myCoin];
-//  [self loadChildPage:kPageTypeMyCoins withCoin:nil];
-//}
+  // totally not DRY, but I'm lazy at this point
+-(void)movePanelRightBeforeShowingCoinInMap:(Coin *)coin { // to show left panel
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"disableMapScroll" object:nil];
+  
+  UIView *childView = [self getLeftView];
+  [self.view sendSubviewToBack:childView];
+  
+  [UIView animateWithDuration:kSlideTiming delay:0 options:UIViewAnimationOptionBeginFromCurrentState
+                   animations:^{
+                     _centerVC.view.frame = CGRectMake(self.view.frame.size.width - kPanelWidth, 0, self.view.frame.size.width, self.view.frame.size.height);
+                   }
+                   completion:^(BOOL finished) {
+                     if (finished) {
+                       _centerVC.leftButton.tag = 0;
+                       [self loadChildPage:kPageTypeCoinMap withCoin:coin showCoinInMap:YES];
+                     }
+                   }];
+  
+}
 
 #pragma mark Default System Code
 
 -(void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

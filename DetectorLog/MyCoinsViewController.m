@@ -10,7 +10,8 @@
 #import "AppDelegate.h"
 #import "MyCoinsViewCell.h"
 #import "Constants.h"
-#import "Coins.h"
+#import "UIImage+Resize.h"
+//#import "Coins.h"
 #import "Coin.h"
 
 @interface MyCoinsViewController () <UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate, CollectionViewCellDelegate>
@@ -20,13 +21,14 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property (strong, nonatomic) UILabel *noCoinsLabel;
+
 @end
 
 @implementation MyCoinsViewController
 
 -(NSFetchedResultsController *)instantiateFetchedResultsController {
-  
-//  if (!_fetchedResultsController) {
+
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   NSEntityDescription *entity = [NSEntityDescription entityForName:@"Coin" inManagedObjectContext:self.managedObjectContext];
   [fetchRequest setEntity:entity];
@@ -37,7 +39,7 @@
   [fetchRequest setFetchBatchSize:20];
   
   NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Coins"];
-//  }
+
   return fetchedResultsController;
 }
 
@@ -55,28 +57,57 @@
   
   self.collectionView.dataSource = self;
   self.collectionView.delegate = self;
-  self.collectionView.frame = CGRectMake(0, 0, self.view.frame.size.width, 100);
+  self.collectionView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - kTopBarHeight);
+  
+  self.noCoinsLabel = [[UILabel alloc] init];
+  self.noCoinsLabel.text = @" You haven't added any coins! ";
+  self.noCoinsLabel.frame = CGRectMake(0, 0, self.view.frame.size.width * 5/6, 100);
+  self.noCoinsLabel.adjustsFontSizeToFitWidth = YES;
+  self.noCoinsLabel.font = [UIFont fontWithName:kFontCaflisch size:48.f];
+  self.noCoinsLabel.textColor = kColourTextBlack;
+  self.noCoinsLabel.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height - kTopBarHeight) / 2);
+  
+  [self.view addSubview:self.noCoinsLabel];
 }
 
 -(void)performFetch {
+  
+    // FIXME: really stupid kludge workaround:
+    // I don't know why it needs to delete an object
+    // in order to register recently added coins
+  Coin *coin = [NSEntityDescription insertNewObjectForEntityForName:@"Coin" inManagedObjectContext:self.managedObjectContext];
+  [self.managedObjectContext deleteObject:coin];
+  
+    //--------------------------------------------------------------------------
+  
   NSError *error;
-  if (![self.fetchedResultsController performFetch:&error]) {
+  BOOL fetchedResultsNoError = [self.fetchedResultsController performFetch:&error];
+  if (!fetchedResultsNoError) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kManagedObjectContextSaveDidFailNotification object:error];
   }
 }
 
 -(void)viewWillAppear:(BOOL)animated {
   
-  NSLog(@"coins view will appear, perform fetch");
+  [self checkIfNoCoins];
+}
+
+-(void)checkIfNoCoins {
+  
   [self performFetch];
   [self.collectionView reloadData];
+  
+  if (self.fetchedResultsController.fetchedObjects.count == 0) {
+    self.noCoinsLabel.hidden = NO;
+  } else {
+    self.noCoinsLabel.hidden = YES;
+  }
 }
 
 #pragma mark - collection view data source and delegate methods
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 
-  NSLog(@"fetched objects count is %i", self.fetchedResultsController.fetchedObjects.count);
   return self.fetchedResultsController.fetchedObjects.count;
 }
 
@@ -85,16 +116,32 @@
   
   Coin *coin = [self.fetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
 
-  if (FALSE) { // FIXME: eventually check if coin has image
-    //  cell.imageView.image = coin.image;
+  if ([coin hasPhoto]) { // FIXME: eventually check if coin has image
+    UIImage *image;
+    image = [coin photoImage];
+    image = [image resizedImageWithBounds:CGSizeMake(150, 150)];
+    cell.imageView.image = image;
+    cell.imageView.layer.cornerRadius = 75.f;
+    cell.imageView.clipsToBounds = YES;
+    
   } else {
     cell.imageView.image = [UIImage imageNamed:@"placeholder_coin"];
+    cell.imageView.layer.cornerRadius = 0.f;
   }
   
   cell.myCoin = coin;
-  cell.titleLabel.text = coin.title;
+  cell.titleLabel.text = coin.name;
   cell.titleLabel.adjustsFontSizeToFitWidth = YES;
   [cell.deleteButton setImage:[UIImage imageNamed:@"delete_icon"] forState:UIControlStateNormal];
+  
+  if (![coin.latitude isEqual:@(MAXFLOAT)] && ![coin.longitude isEqual:@(MAXFLOAT)]) {
+    cell.mapButton.hidden = NO;
+    cell.mapButton.enabled = YES;
+    [cell.mapButton setImage:[UIImage imageNamed:@"map_icon"] forState:UIControlStateNormal];
+  } else {
+    cell.mapButton.hidden = YES;
+    cell.mapButton.enabled = NO;
+  }
   
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
   [dateFormatter setDateStyle:NSDateFormatterShortStyle];
@@ -118,53 +165,7 @@
 
 #pragma mark - NSFetchedResultsController delegate methods
 
--(void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//  [self.collectionView reloadData];
-}
-
--(void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-  switch (type) {
-    case NSFetchedResultsChangeInsert:
-      NSLog(@"insert");
-//      [self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-      break;
-    case NSFetchedResultsChangeDelete:
-      NSLog(@"delete");
-//      [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-      break;
-    case NSFetchedResultsChangeUpdate:
-      NSLog(@"update");
-//      [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
-      break;
-    case NSFetchedResultsChangeMove:
-      NSLog(@"change move");
-//      [self.collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//      [self.collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-      break;
-    default:
-      break;
-  }
-  [self.collectionView reloadData];
-}
-
--(void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-  switch (type) {
-    case NSFetchedResultsChangeInsert:
-//      NSLog(@"controller insert");
-//      [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-      break;
-    case NSFetchedResultsChangeDelete:
-//      NSLog(@"controller delete");
-//      [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-      break;
-    default:
-      break;
-  }
-}
-
 -(void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-  
-  NSLog(@"controller did change content");
   
   [self performFetch];
   [self.collectionView reloadData];
@@ -173,8 +174,8 @@
 #pragma mark - collection view cell delegate methods
 
 -(void)deleteCoin:(Coin *)myCoin {
-  
-  NSLog(@"delete coin method called");
+
+  [myCoin removePhotoFile];
   [self.managedObjectContext deleteObject:myCoin];
   
   NSError *error;
@@ -182,12 +183,18 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kManagedObjectContextSaveDidFailNotification object:error];
     abort();
   }
+  
+  [self checkIfNoCoins];
 }
 
 #pragma mark - system methods
 
 -(void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

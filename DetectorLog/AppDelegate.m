@@ -18,7 +18,6 @@
 @end
 
 @implementation AppDelegate
-            
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // Override point for customization after application launch.
@@ -81,8 +80,6 @@
     
     NSError *error;
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-      
-      NSLog(@"Error adding persistent store %@, %@", error, [error userInfo]);
       abort();
     }
   }
@@ -108,11 +105,5 @@
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
   abort();
 }
-
-//-(void)managedObjectContextDidSave:(NSNotification *)notification {
-//  if (self.managedObjectContext != notification.object) {
-//    [self.managedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-//  }
-//}
 
 @end

@@ -51,17 +51,37 @@
   
   switch (indexPath.row) {
     case 0:
-      [self.myMainVC loadChildPage:kPageTypeFoundCoin withCoin:nil];
+      [self.myMainVC loadChildPage:kPageTypeFoundCoin withCoin:nil showCoinInMap:NO];
       break;
     case 1:
-      [self.myMainVC loadChildPage:kPageTypeMyCoins withCoin:nil];
+      [self.myMainVC loadChildPage:kPageTypeMyCoins withCoin:nil showCoinInMap:NO];
       break;
     case 2:
-        // FIXME
+      [self.myMainVC loadChildPage:kPageTypeCoinMap withCoin:nil showCoinInMap:NO];
       break;
   }
   
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+}
+
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  return YES;
+}
+
+-(void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  LeftPanelTableViewCell *cell = (LeftPanelTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+  cell.contentView.backgroundColor = [UIColor whiteColor];
+  cell.backgroundColor = [UIColor whiteColor];
+}
+
+-(void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+  LeftPanelTableViewCell *cell = (LeftPanelTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+  cell.contentView.backgroundColor = kColourLightTan;
+  cell.backgroundColor = kColourLightTan;
 }
 
 #pragma mark Default System Code

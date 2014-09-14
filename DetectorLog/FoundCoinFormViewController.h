@@ -23,6 +23,7 @@
 
 -(void)updatePickedImage:(UIImage *)pickedImage;
 -(UIView *)checkFirstResponder;
+-(void)checkIfAddOrEdit;
 
 @end
 

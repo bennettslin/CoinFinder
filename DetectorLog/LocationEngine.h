@@ -19,6 +19,7 @@
 
 -(void)startLocationManager;
 -(void)stopLocationManagerWithError:(NSError *)error;
+-(BOOL)checkLocationServicesEnabled;
 
 @end
 
@@ -27,6 +28,7 @@
 -(void)updateLocationServicesDisabled;
 -(void)updateLatitude:(float)latitude longitude:(float)longitude;
 -(void)updatePlacemark:(CLPlacemark *)placemark;
+-(void)showErrorAlertView:(NSError *)error;
 
 @end
 
